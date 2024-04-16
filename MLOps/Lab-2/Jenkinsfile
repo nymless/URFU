@@ -3,8 +3,8 @@ pipeline {
     agent any
     environment {
         TRAIN_PATH      = 'train/train.csv'
-        TEST_PATH       = 'test/test.csv'
         TRAIN_PREP_PATH = 'train/train_prep.csv'
+        TEST_PATH       = 'test/test.csv'
         TEST_PREP_PATH  = 'test/test_prep.csv'
         MODEL_PATH      = 'model/model.pkl'
     }
@@ -12,28 +12,28 @@ pipeline {
         stage('Data creation') {
             steps {
                 echo 'Data creation (start)'
-                sh 'python3 src/data_creation.py'
+                sh 'python3 MLOps/Lab-2/src/data_creation.py'
                 echo 'Data creation (end)'
             }
         }
         stage('Data preprocessing') {
             steps {
                 echo 'Data preprocessing (start)'
-                sh 'python3 src/data_preprocessing.py'
+                sh 'python3 MLOps/Lab-2/src/data_preprocessing.py'
                 echo 'Data preprocessing (end)'
             }
         }
         stage('Model preparation') {
             steps {
                 echo 'Model preparation (start)'
-                sh 'python3 src/model_preparation.py'
+                sh 'python3 MLOps/Lab-2/src/model_preparation.py'
                 echo 'Model preparation (end)'
             }
         }
         stage('Model testing') {
             steps {
                 echo 'Model testing (start)'
-                sh 'python3 src/model_testing.py'
+                sh 'python3 MLOps/Lab-2/src/model_testing.py'
                 echo 'Model testing (end)'
             }
         }
