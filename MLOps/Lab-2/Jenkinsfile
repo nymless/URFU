@@ -1,4 +1,3 @@
-/* groovylint-disable-next-line CompileStatic */
 pipeline {
     agent any
     environment {
@@ -7,34 +6,53 @@ pipeline {
         TEST_PATH       = 'test/test.csv'
         TEST_PREP_PATH  = 'test/test_prep.csv'
         MODEL_PATH      = 'model/model.pkl'
+        PROJECT_PATH    = 'MLOps/Lab-2'
     }
     stages {
-        stage('Data creation') {
+        stage('Setup Python Environment') {
             steps {
-                echo 'Data creation (start)'
-                sh 'python3 MLOps/Lab-2/src/data_creation.py'
-                echo 'Data creation (end)'
+                echo 'Setting up Python virtual environment'
+                sh '''
+                python3 -m venv venv
+                source venv/bin/activate
+                pip install -r $PROJECT_PATH/requirements.txt
+                '''
             }
         }
-        stage('Data preprocessing') {
+        stage('Create data') {
             steps {
-                echo 'Data preprocessing (start)'
-                sh 'python3 MLOps/Lab-2/src/data_preprocessing.py'
-                echo 'Data preprocessing (end)'
+                echo 'Data creation'
+                sh '''
+                source venv/bin/activate
+                python3 $PROJECT_PATH/src/data_creation.py
+                '''
             }
         }
-        stage('Model preparation') {
+        stage('Preprocess data') {
             steps {
-                echo 'Model preparation (start)'
-                sh 'python3 MLOps/Lab-2/src/model_preparation.py'
-                echo 'Model preparation (end)'
+                echo 'Data preprocessing'
+                sh '''
+                source venv/bin/activate
+                python3 $PROJECT_PATH/src/data_preprocessing.py
+                '''
             }
         }
-        stage('Model testing') {
+        stage('Prepare model') {
             steps {
-                echo 'Model testing (start)'
-                sh 'python3 MLOps/Lab-2/src/model_testing.py'
-                echo 'Model testing (end)'
+                echo 'Model preparation'
+                sh '''
+                source venv/bin/activate
+                python3 $PROJECT_PATH/src/model_preparation.py
+                '''
+            }
+        }
+        stage('Test model') {
+            steps {
+                echo 'Model testing'
+                sh '''
+                source $VENV_PATH/bin/activate
+                python3 $PROJECT_PATH/src/model_testing.py
+                '''
             }
         }
     }
