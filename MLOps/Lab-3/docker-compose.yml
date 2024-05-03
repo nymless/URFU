@@ -1,0 +1,12 @@
+name: "lab_3-app"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: lab_3-app-image
+    container_name: lab_3-app-container
+    ports:
+      - "8081:8081"
+    volumes:
+      - .:/app
