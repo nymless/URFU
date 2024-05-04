@@ -20,7 +20,7 @@ del_venv:
 
 # Удаление всех пакетов из виртуального окружения`
 .PHONY: del_deps
-del_deps: venv
+del_deps:
 	(. ./.venv/bin/activate; pip freeze | xargs pip uninstall -y)
 
 # Сохранение зависимостей в файл `requirements.txt`
